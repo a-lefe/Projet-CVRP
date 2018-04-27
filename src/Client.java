@@ -4,12 +4,16 @@ public class Client {
     private int x;
     private int y;
     private int qte;
+    boolean entrepot;
+
+    public Client(){}
 
     public Client(int id, int x, int y, int qte) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.qte = qte;
+        computeEntrepot();
     }
 
     public int getId() {
@@ -39,6 +43,23 @@ public class Client {
 
     
     public String toString(){
-        return "Client : " + this.id + " Localisé à : " + this.x + ";" + this.y + " - Quantité livrée : " + this.qte;
+        String msg = "";
+        if(this.entrepot == true){
+            msg += "Entrepot : Localisé à : " + this.getX() + ";" + this.getY();
+        }
+        else{
+            msg += "Client : " + this.getId() + " Localisé à : " + this.getX() + ";" +this.getY()
+                    + " - Quantité livrée : " + this.getQte();
+        }
+        return msg;
+    }
+
+    public void computeEntrepot(){
+        if(this.id == 0 && this.getQte() == 0){
+            this.entrepot = true;
+        }
+        else{
+            this.entrepot = false;
+        }
     }
 }
