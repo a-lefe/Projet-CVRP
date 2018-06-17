@@ -13,7 +13,7 @@ public class Main {
     //Modifier le numéro du jeu de données pour changer le fichier de départ.
     private static String FICHIER_DATA = "data/data01.csv";
     //Modifier cette valeur pour modifier le nombre de camion
-    private static int NB_CAMIONS = 5;
+    private static int NB_CAMIONS = 11;
 
     public static ArrayList<Camion> solutionActuelle;
     public static double fitnessActuelle;
@@ -27,7 +27,7 @@ public class Main {
         clients = chargerClients();
 
         if(NB_CAMIONS < nbCamions(clients)){
-            System.out.println("Nombre de clients minimum : " +nbCamions(clients));
+            System.out.println("Nombre de camions minimum : " +nbCamions(clients));
             return;
         }
         System.out.println("SOLUTION INITIALE :");
@@ -35,10 +35,14 @@ public class Main {
         fitnessActuelle = fitness(solutionActuelle);
 
         System.out.println(verifierSolution(solutionActuelle));
+
+        //Inverser le commentaire des deux lignes pour passer d'une méthode à l'autre.
         for(int i = 0; i<=NB_ITERATIONS;i++){
             genererVoisinTabou(cloneList(solutionActuelle));
+            //genererVoisin(cloneList(solutionActuelle));
         }
 
+        System.out.println("MEILLEURE SOLUTION TROUVEE");
         afficherTournee(solutionActuelle);
         System.out.println(verifierSolution(solutionActuelle));
         System.out.println("Meilleure fitness trouvee : " + meilleureFitnessTrouvee);
@@ -130,24 +134,47 @@ public class Main {
         Client clientLivrable = new Client();
         Client entrepot = clientsALivrer.get(0);
         boolean arret = false;
+        clientsALivrer.remove(entrepot);
 
         Collections.shuffle(camions);
 
-        for (Camion camion : camions) {
-            arret = false;
-            camion.getTournee().add(entrepot);
-            clientsALivrer.remove(entrepot);
-            Collections.shuffle(clientsALivrer);
+        for (Camion c : camions){
+            c.getTournee().add(entrepot);
+        }
 
-            for(Client client : new ArrayList<>(clientsALivrer)){
-                if(camion.getCapacite() > client.getQte()){
+        Random r = new Random();
+        boolean next = false;
+        for (Client client : clientsALivrer) {
+            next = false;
+            while (!next) {
+                Camion camion = camions.get(r.nextInt(NB_CAMIONS));
+                if (camion.getCapacite() > client.getQte()) {
                     camion.getTournee().add(client);
                     camion.setCapacite(camion.getCapacite() - client.getQte());
-                    clientsALivrer.remove(client);
+                    next = true;
                 }
             }
-            camion.getTournee().add(entrepot);
-    }
+        }
+
+        for (Camion c : camions){
+            c.getTournee().add(entrepot);
+        }
+
+//        for (Camion camion : camions) {
+//            arret = false;
+//            camion.getTournee().add(entrepot);
+//            clientsALivrer.remove(entrepot);
+//            Collections.shuffle(clientsALivrer);
+//
+//            for(Client client : new ArrayList<>(clientsALivrer)){
+//                if(camion.getCapacite() > client.getQte()){
+//                    camion.getTournee().add(client);
+//                    camion.setCapacite(camion.getCapacite() - client.getQte());
+//                    clientsALivrer.remove(client);
+//                }
+//            }
+//            camion.getTournee().add(entrepot);
+//        }
 
         afficherTournee(camions);
         return camions;
