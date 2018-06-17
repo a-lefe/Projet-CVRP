@@ -1,10 +1,13 @@
-public class Client {
+public class Client implements Cloneable{
 
     private int id;
     private int x;
     private int y;
     private int qte;
     boolean entrepot;
+
+
+    boolean livrer = false;
 
     public Client(){}
 
@@ -62,4 +65,27 @@ public class Client {
             this.entrepot = false;
         }
     }
+
+    public boolean isLivrer() {
+        return livrer;
+    }
+
+    public void setLivrer(boolean livrer) {
+        this.livrer = livrer;
+    }
+
+    public Client clone() throws CloneNotSupportedException {
+        return (Client)super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        return id == client.id;
+    }
+
 }
