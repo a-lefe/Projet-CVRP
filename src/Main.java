@@ -9,11 +9,11 @@ public class Main {
     //Modifier cette valeur pour changer le nombre d'itérations de l'algorithme
     private static int NB_ITERATIONS = 100;
     //Modifier cette valeur pour changer la taille de la liste tabou
-    private static int TAILLE_LISTE_TABOU = 5;
+    private static int TAILLE_LISTE_TABOU = 10;
     //Modifier le numéro du jeu de données pour changer le fichier de départ.
     private static String FICHIER_DATA = "data/data01.csv";
     //Modifier cette valeur pour modifier le nombre de camion
-    private static int NB_CAMIONS = 11;
+    private static int NB_CAMIONS = 5;
 
     public static ArrayList<Camion> solutionActuelle;
     public static double fitnessActuelle;
